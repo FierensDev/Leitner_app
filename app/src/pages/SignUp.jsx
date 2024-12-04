@@ -4,13 +4,11 @@ import { IconGoogle } from "../assets/IconGoogle";
 import { ProgressBar } from "../components/atoms/ProgressBar";
 import { useState } from "react";
 import { InputText } from "../components/atoms/form/InputText";
+import { useError } from "../hooks/ErrorContext";
 
 export function SignUp(){
+  const {error, setError} = useError();
 
-  // const [formData, setFormData] = useState({
-  //   firstname: "",
-  //   lastname: ""
-  // });
   const [formError, setFormError] = useState({
     lastname: false,
     firstname: false,
@@ -22,17 +20,37 @@ export function SignUp(){
     return email.includes("@")
   }
 
+  function validateFirstName(firstname){
+    return firstname.length > 3 && firstname.length < 15;
+  }
+
+  function validateLastName(lastname){
+    return lastname.length > 3 && lastname.length < 15;
+  }
+
   function createAccount(data){
-    fetch(url + "/user/create", {
+    fetch("http://localhost:8080/user/create", {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
+      headers:{
+        'Content-Type': 'application/json' 
       },
-      body: data
+      body: JSON.stringify(data)
     })
     .then(res => {
-      console.log(res);
+      return res.json()
     })
+    .then(data => {
+      console.log(data);
+      if(data.code > 399){
+        setError(data.details)
+      } 
+      if(data.code === 201){
+        
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err);
+    });
   }
  
   function submitForm(e){
@@ -40,20 +58,44 @@ export function SignUp(){
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
+    let errors = {};
+    
     if(data.password !== data.check_password){
-      setFormError((prevValue) => ({...prevValue, password: "Les mots de passe doivent être identique"}))
-      console.log("change apssword")
+      errors.password = "Les mots de passe doivent être identique";
     } else {
-      setFormError((prevValue) => ({...prevValue, password: false}))
+      errors.password = false;
     }
     if(!validateEmail(data.email)){
-      setFormError((prevValue) => ({...prevValue, email: "Veuillez indiquer un email"}))
-      console.log("change email")
+      errors.email = "Veuillez indiquer un email";
     }else {
-      setFormError((prevValue) => ({...prevValue, email: false}))
+      errors.email = false;
     }
-    // if all is false{}
-    createAccount(data);
+    
+    if(!validateFirstName(data.firstname)){
+      errors.firstname = "Le prénom doit faire minimum 3 caracteres";
+    }else {
+      errors.firstname = false;
+    }
+
+    if(!validateLastName(data.lastname)){
+      errors.lastname = "Le nom de famille doit faire minimum 3 caracteres";
+    }else {
+      errors.lastname = false;
+    }
+
+    setFormError((prevValues) => ({...prevValues, ...errors}));
+    
+    if(Object.values(errors).every((value) => value === false)){
+      console.log('ca ssenvoie')
+      createAccount({
+        lastname:data.lastname,
+        firstname:data.firstname,
+        email:data.email,
+        password: data.password
+      });
+      return;
+    }
+    console.log('ca ssenvoie pas')
   }
 
   return (
@@ -80,7 +122,19 @@ export function SignUp(){
             <InputText type="password" labelValue="Mot de passe" id="password" placeholder="********" error={formError.password}/>
             <InputText type="password" labelValue="Confirmation du mot de passe" id="check_password" placeholder="********" error={formError.password}/>
             
-            <div className="py-4">
+              {
+                Object.entries(formError).map(([key, value]) => {
+                  if(value){
+                    return (
+                      <div key={key} className="border border-red-400 rounded-lg bg-[#bd141325] p-4">
+                        <p  className="">- {value}</p>
+                      </div>
+                    )
+                  }
+                  return null;
+                })
+              }
+            <div className="py-4" >
               <a href="" className="bg-subtitle rounded-full grid grid-cols-[23px_1fr] gap-2 place-items-center p-2">
                 <IconGoogle />
                 <p>Se connecter avec google</p>

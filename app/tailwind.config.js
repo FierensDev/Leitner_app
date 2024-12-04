@@ -7,7 +7,8 @@ module.exports = {
         background: "#191A1F",
         primary: "#674AFB",
         secondary: "#FE628B",
-        subtitle: "#35383E"
+        subtitle: "#35383E",
+        error: "#FE628B"
       },
       fontSize: {
         h2: "2rem",

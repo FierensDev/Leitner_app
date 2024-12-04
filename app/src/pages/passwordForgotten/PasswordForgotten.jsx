@@ -24,7 +24,7 @@ Entrez votre adresse mail, nous vous enverrons un mail afin de modifier votre mo
         </div>
 
         <div>
-          <p>form...</p>
+          {/* <p>form...</p> */}
         </div>
 
         <button onClick={() => {

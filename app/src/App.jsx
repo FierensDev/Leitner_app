@@ -43,7 +43,7 @@ function App() {
     <ErrorProvider>
       <LoaderProvider>
         {firstVisit ? <ScreenLoader /> : <></>}
-        <Router>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             {routes.map((route, index) => (
               <Route key={index} path={route.path} element={route.component} />

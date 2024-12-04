@@ -34,7 +34,7 @@ export function InputText({htmlFor, labelValue, id, placeholder, type, error}){
       />
       
       { type === "password" ?
-        <p onClick={changePasswordVisibility} className=" flex justify-center">
+        <div onClick={changePasswordVisibility} className=" flex justify-center">
           {passwordVisibility ?
             <div className="w-5 ">
               <EyeClose />
@@ -44,7 +44,7 @@ export function InputText({htmlFor, labelValue, id, placeholder, type, error}){
               <Eye />
             </div>
           }
-        </p>
+        </div>
         :
         <></>
       }
