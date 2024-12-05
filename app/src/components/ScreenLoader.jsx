@@ -2,7 +2,7 @@ import { Logo } from "../assets/Logo";
 
 export function ScreenLoader(){
   return (
-    <div className="absolute inset-0 bg-background grid grid-cols-1">
+    <div className="fixed inset-0 bg-background grid grid-cols-1">
       <div className="flex justify-center items-center">
         <div className="w-[150px]">
           <Logo />

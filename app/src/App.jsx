@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home";
-import { ErrorProvider } from "./hooks/ErrorContext";
 import { LoaderProvider } from "./hooks/LoaderContext";
 import { useEffect, useState } from "react";
 import { ScreenLoader } from "./components/ScreenLoader";
@@ -11,6 +10,7 @@ import { SignUp } from "./pages/SignUp";
 import { PasswordForgotten } from "./pages/passwordForgotten/PasswordForgotten";
 import { PasswordForgottenCode } from "./pages/passwordForgotten/PasswordForgottenCode";
 import { PasswordForgottenCreateNewPassword } from "./pages/passwordForgotten/PasswordForgottenCreateNewPassword";
+import { NotificationProvider } from "./hooks/NotificationContext";
 
 let isConnected = false;
 
@@ -40,7 +40,7 @@ function App() {
   }, [firstVisit])
 
   return (
-    <ErrorProvider>
+    <NotificationProvider>
       <LoaderProvider>
         {firstVisit ? <ScreenLoader /> : <></>}
         <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -52,7 +52,7 @@ function App() {
         </Router>
       
       </LoaderProvider>
-    </ErrorProvider>
+    </NotificationProvider>
   );
 }
 

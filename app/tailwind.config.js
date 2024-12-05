@@ -6,6 +6,7 @@ module.exports = {
       colors: { // Utiliser 'colors' au lieu de 'color'
         background: "#191A1F",
         primary: "#674AFB",
+        primary70: "#674AFB70",
         secondary: "#FE628B",
         subtitle: "#35383E",
         error: "#FE628B"

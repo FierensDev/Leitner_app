@@ -10,7 +10,7 @@ export const LoaderProvider = ({ children }) => {
     <LoaderContext.Provider value={{ loader, setLoader }}>
       {children}
       {loader ? 
-        <div className='absolute inset-0 bg-[#222427B3] backdrop-blur-[2.2px]'>
+        <div className='fixed inset-0 bg-[#222427B3] backdrop-blur-[2.2px]'>
           loader
           <div className='relative top-[calc(50%-100px)] left-[calc(50%-52px)] w-[100px]'>
             <Logo />

@@ -4,10 +4,10 @@ import { IconGoogle } from "../assets/IconGoogle";
 import { ProgressBar } from "../components/atoms/ProgressBar";
 import { useState } from "react";
 import { InputText } from "../components/atoms/form/InputText";
-import { useError } from "../hooks/ErrorContext";
+import { useNotification } from "../hooks/NotificationContext";
 
 export function SignUp(){
-  const {error, setError} = useError();
+  const {notification, setNotification} = useNotification();
 
   const [formError, setFormError] = useState({
     lastname: false,
@@ -41,11 +41,13 @@ export function SignUp(){
     })
     .then(data => {
       console.log(data);
-      if(data.code > 399){
-        setError(data.details)
-      } 
+      setNotification({
+        code: data.code,
+        message: data.details
+      })
+      
       if(data.code === 201){
-        
+
       }
     })
     .catch(err => {
@@ -134,6 +136,24 @@ export function SignUp(){
                   return null;
                 })
               }
+            <button
+            style={{background: 'red', padding: '10px',margin: '2px', color:'white', fontSize: '20px'}}
+            onClick={() => {
+              setNotification({
+                code: 201,
+                message: "utilisateur créer avec succés"
+              })
+            }}
+            >test</button>
+            <button
+            style={{background: 'red', padding: '10px',margin: '2px', color:'white', fontSize: '20px'}}
+            onClick={() => {
+              setNotification({
+                code: 400,
+                message: "email deja utilise ou jsp"
+              })
+            }}
+            >error</button>
             <div className="py-4" >
               <a href="" className="bg-subtitle rounded-full grid grid-cols-[23px_1fr] gap-2 place-items-center p-2">
                 <IconGoogle />
