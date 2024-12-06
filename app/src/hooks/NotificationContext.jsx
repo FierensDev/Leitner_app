@@ -14,7 +14,7 @@ export const NotificationProvider = ({ children }) => {
     if(notification.code < 400){
       const timer = setTimeout(() => {
         setNotification({code: false,message: false })
-      }, 3000);
+      }, 2900);
       
       return () => clearTimeout(timer)
     }
@@ -43,7 +43,7 @@ export const NotificationProvider = ({ children }) => {
           </div> 
         </div>
         :
-        <div className="fixed top-3 right-3 bg-primary70 p-3 rounded-xl border border-primary">
+        <div className="bg-primary70 moveXY">
           {notification.message}
         </div>
       :<></>

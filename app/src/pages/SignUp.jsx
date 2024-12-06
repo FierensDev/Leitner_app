@@ -1,32 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Arrow } from "../assets/Arrow";
 import { IconGoogle } from "../assets/IconGoogle";
 import { ProgressBar } from "../components/atoms/ProgressBar";
 import { useState } from "react";
 import { InputText } from "../components/atoms/form/InputText";
 import { useNotification } from "../hooks/NotificationContext";
+import { validateEmail, validateFirstName, validateLastName } from "../utils/form";
 
 export function SignUp(){
-  const {notification, setNotification} = useNotification();
 
+  const {notification, setNotification} = useNotification();
+  const navigate = useNavigate();
+  
   const [formError, setFormError] = useState({
     lastname: false,
     firstname: false,
     email: false, 
     password: false
   })
-
-  function validateEmail(email){
-    return email.includes("@")
-  }
-
-  function validateFirstName(firstname){
-    return firstname.length > 3 && firstname.length < 15;
-  }
-
-  function validateLastName(lastname){
-    return lastname.length > 3 && lastname.length < 15;
-  }
 
   function createAccount(data){
     fetch("http://localhost:8080/user/create", {
@@ -43,11 +34,10 @@ export function SignUp(){
       console.log(data);
       setNotification({
         code: data.code,
-        message: data.details
+        message: data.message
       })
-      
       if(data.code === 201){
-
+        navigate("/sign_in")
       }
     })
     .catch(err => {
@@ -97,7 +87,6 @@ export function SignUp(){
       });
       return;
     }
-    console.log('ca ssenvoie pas')
   }
 
   return (
@@ -136,24 +125,7 @@ export function SignUp(){
                   return null;
                 })
               }
-            <button
-            style={{background: 'red', padding: '10px',margin: '2px', color:'white', fontSize: '20px'}}
-            onClick={() => {
-              setNotification({
-                code: 201,
-                message: "utilisateur créer avec succés"
-              })
-            }}
-            >test</button>
-            <button
-            style={{background: 'red', padding: '10px',margin: '2px', color:'white', fontSize: '20px'}}
-            onClick={() => {
-              setNotification({
-                code: 400,
-                message: "email deja utilise ou jsp"
-              })
-            }}
-            >error</button>
+
             <div className="py-4" >
               <a href="" className="bg-subtitle rounded-full grid grid-cols-[23px_1fr] gap-2 place-items-center p-2">
                 <IconGoogle />
